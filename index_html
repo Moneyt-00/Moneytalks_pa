@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure Payment</title>
+</head>
+<body>
+  <h2>Checking your location…</h2>
+
+  <script>
+    fetch("https://ipapi.co/json/")
+      .then(res => res.json())
+      .then(data => {
+        if (data.country === "IN") {
+          // India ₹10
+          window.location.href = "https://rzp.io/l/INDIA_LINK";
+        } else {
+          // International ₹40
+          window.location.href = "https://rzp.io/l/INTL_LINK";
+        }
+      })
+      .catch(() => {
+        alert("Please try again");
+      });
+  </script>
+</body>
+</html>
