@@ -2,25 +2,40 @@
 <html>
 <head>
   <title>Secure Payment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f7f7f7;
+    }
+    h2 { color:#333; }
+  </style>
 </head>
 <body>
-  <h2>Checking your location…</h2>
+  <h2>Checking your location...</h2>
 
   <script>
+    const indiaPaymentLink = "https://rzp.io/rzp/UC3cimC7";         // ₹10
+    const internationalPaymentLink = "https://rzp.io/rzp/vmr5gHJ";  // ₹40
+
     fetch("https://ipapi.co/json/")
       .then(res => res.json())
       .then(data => {
         if (data.country === "IN") {
-          // India ₹10
-          window.location.href = "https://rzp.io/rzp/l6z2ONZj";
+          window.location.href = indiaPaymentLink;
         } else {
-          // International ₹50
-          window.location.href = "https://rzp.io/rzp/DcWW2Lu";
+          window.location.href = internationalPaymentLink;
         }
       })
       .catch(() => {
-        alert("Please try again");
+        // fallback if API fails
+        window.location.href = indiaPaymentLink;
       });
   </script>
 </body>
 </html>
+
