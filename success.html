@@ -187,16 +187,31 @@
 
     <!-- STEP 3 JS ADDED HERE -->
     <script>
-        const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
+  const paymentId = params.get("razorpay_payment_id");
 
-        const paymentId = params.get("razorpay_payment_id");
+  if (paymentId) {
+    // Generate One-Time Token
+    function generateToken() {
+      const part1 = "MT";
+      const part2 = new Date().toISOString().slice(0,10).replace(/-/g,"");
+      const part3 = Math.random().toString(36).substring(2, 8).toUpperCase();
+      return `${part1}-${part2}-${part3}`;
+    }
 
-        document.getElementById("paymentId").textContent =
-            paymentId ? paymentId : "Not available";
+    const token = generateToken();
 
-        const now = new Date();
-        document.getElementById("paymentDate").textContent =
-            now.toLocaleString();
+    // Save token to localStorage
+    localStorage.setItem("mt_access_token", token);
+
+    // Wait 2 seconds, then redirect to access page
+    setTimeout(() => {
+      window.location.href = "/access.html";
+    }, 2000);
+
+    // OPTIONAL: Show on screen (good for debugging)
+    console.log("Generated Token:", token);
+  }
     </script>
     <!-- END STEP 3 -->
 
