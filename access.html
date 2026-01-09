@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Access Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <h2 id="status">Checking access...</h2>
+
+  <script>
+    const token = localStorage.getItem("mt_access_token");
+
+    if (token) {
+      document.getElementById("status").innerText = "Access Granted 🟢";
+      // TODO: Load your protected content here
+    } else {
+      document.getElementById("status").innerText = "Access Denied 🔴";
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
+
