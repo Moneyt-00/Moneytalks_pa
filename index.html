@@ -1,41 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Secure Payment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>MoneyTalks • Start</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
-      background: #f7f7f7;
+      margin-top: 70px;
+      text-align: center;
     }
-    h2 { color:#333; }
+    #payBtn {
+      padding: 14px 28px;
+      background: black;
+      color: white;
+      font-size: 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+    #loader {
+      font-size: 17px;
+      color: #555;
+    }
   </style>
 </head>
 <body>
-  <h2>Checking your location...</h2>
 
-  <script>
-    const indiaPaymentLink = "https://rzp.io/rzp/UC3cimC7";         // ₹10
-    const internationalPaymentLink = "https://rzp.io/rzp/vmr5gHJ";  // ₹40
+  <h2>Checking your region...</h2>
+  <div id="loader">Please wait...</div>
 
-    fetch("https://ipapi.co/json/")
-      .then(res => res.json())
-      .then(data => {
-        if (data.country === "IN") {
-          window.location.href = indiaPaymentLink;
-        } else {
-          window.location.href = internationalPaymentLink;
-        }
-      })
-      .catch(() => {
-        // fallback if API fails
-        window.location.href = indiaPaymentLink;
-      });
-  </script>
+  <button id="payBtn"></button>
+
+<script>
+(async function () {
+
+  // 👉 Your Razorpay payment page links
+  const LINK_INDIA = "https://rzp.io/l/INDIA10";
+  const LINK_GLOBAL = "https://rzp.io/l/GLOBAL40";
+
+  let targetLink = LINK_GLOBAL;
+  let amount = 40;
+
+  try {
+    const res = await fetch("https://ipapi.co/json/");
+    const data = await res.json();
+    const country = data.country_name;
+
+    document.getElementById("loader").innerText = "Detected: " + country;
+
+    // Logic for pricing
+    if (country === "India") {
+      targetLink = LINK_INDIA;
+      amount = 10;
+      document.getElementById("loader").innerText += " (₹10)";
+    } else {
+      targetLink = LINK_GLOBAL;
+      amount = 40;
+      document.getElementById("loader").innerText += " (₹40)";
+    }
+
+    const btn = document.getElementById("payBtn");
+    btn.style.display = "block";
+    btn.innerText = `Continue to Pay ₹${amount}`;
+
+    // When user clicks → go to Razorpay + include amount for success.html
+    btn.onclick = () => {
+      window.location.href = `${targetLink}?mt_amount=${amount}`;
+    };
+
+  } catch (err) {
+    // fallback
+    const btn = document.getElementById("payBtn");
+    btn.style.display = "block";
+    btn.innerText = "Continue to Pay ₹40";
+    btn.onclick = () => {
+      window.location.href = `${LINK_GLOBAL}?mt_amount=40`;
+    };
+    document.getElementById("loader").innerText = "Couldn't detect region. Defaulting to global ₹40.";
+  }
+
+})();
+</script>
+
 </body>
 </html>
-
