@@ -1,219 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Success</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Success</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #0b0f19;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #0b0f19;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-        .card {
-            position: relative;
-            width: 350px;
-            background: #131a2b;
-            padding: 30px 25px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0px 0px 25px rgba(0,0,0,0.4);
-        }
+    .card {
+        position: relative;
+        width: 350px;
+        background: #131a2b;
+        padding: 30px 25px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0px 0px 25px rgba(0,0,0,0.4);
+    }
 
-        .logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+    }
 
-        .logo-box {
-            background: #0aefff;
-            color: #000;
-            font-weight: bold;
-            padding: 4px 7px;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
+    .logo-box {
+        background: #0aefff;
+        color: #000;
+        font-weight: bold;
+        padding: 4px 7px;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
 
-        .brand {
-            font-size: 20px;
-            font-weight: bold;
-            color: #0aefff;
-        }
+    .brand {
+        font-size: 20px;
+        font-weight: bold;
+        color: #0aefff;
+    }
 
-        .check {
-            width: 60px;
-            height: 60px;
-            margin: 10px auto 20px;
-            border-radius: 50%;
-            background: #00c853;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .check {
+        width: 60px;
+        height: 60px;
+        margin: 10px auto 20px;
+        border-radius: 50%;
+        background: #00c853;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        .check::before {
-            content: "✔";
-            font-size: 32px;
-            color: white;
-        }
+    .check:before {
+        content: "✓";
+        font-size: 32px;
+        color: white;
+    }
 
-        .highlight {
-            color: #00e5ff;
-            font-weight: 600;
-        }
+    .success {
+        color: #22c55e;
+        font-weight: 600;
+    }
 
-        .btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #00e5ff;
-            color: #000;
-            font-weight: bold;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: 0.2s;
-        }
+    .payment-box {
+        background: #0d1628;
+        padding: 12px;
+        border-radius: 6px;
+        text-align: left;
+        margin: 10px 20px;
+        font-size: 14px;
+        line-height: 22px;
+        border: 1px solid #0aefff33;
+    }
 
-        .btn:hover {
-            background: #00bcd4;
-        }
+    .payment-box strong {
+        color: #0aefff;
+    }
 
-        .payment-box {
-            background: #0d1628;
-            padding: 12px;
-            border-radius: 6px;
-            text-align: left;
-            margin: 10px 0 20px;
-            font-size: 14px;
-            line-height: 22px;
-            border: 1px solid #0aefff33;
-        }
+    .highlight {
+        color: #0aefff;
+        font-weight: 600;
+    }
 
-        .payment-box strong {
-            color: #0aefff;
-        }
-
-        /* confetti squares */
-        .confetti {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .confetti span {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            opacity: 0.8;
-            animation: float 6s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(500px) rotate(360deg); }
-        }
-
-        /* ADDED STEP 2 CSS */
-        .details {
-            margin-top: 20px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #e5e7eb;
-        }
-
-        .details strong {
-            color: #9ca3af;
-        }
-
-        .success {
-            color: #22c55e;
-            font-weight: 600;
-        }
-        /* STEP 2 END */
-
-    </style>
+</style>
 </head>
 
 <body>
-    <div class="card">
 
-        <div class="confetti">
-            <span style="background:#22c55e; left:10%; animation-delay:0s"></span>
-            <span style="background:#a78bfa; left:30%; animation-delay:1s"></span>
-            <span style="background:#38bdf8; left:50%; animation-delay:2s"></span>
-            <span style="background:#fbbf24; left:70%; animation-delay:0.5s"></span>
-            <span style="background:#4ade80; left:90%; animation-delay:1.5s"></span>
-        </div>
+<div class="card">
 
-        <div class="logo">
-            <div class="logo-box">MT</div>
-            <div class="brand">MoneyTalks</div>
-        </div>
-
-        <div class="check"></div>
-
-        <h2 class="success">Payment Successful!</h2>
-
-        <div class="payment-box details">
-            <strong>Payment Details:</strong><br>
-            Amount: <strong>₹499</strong><br>
-            Transaction ID: <strong id="paymentId">Loading...</strong><br>
-            Date: <strong id="paymentDate">Loading...</strong>
-        </div>
-
-        <p>
-            <span class="highlight">Thank you for trusting us!</span><br>
-            Your payment has been successfully processed.
-        </p>
-
-        <p>
-            Welcome to the <span class="highlight">MoneyTalks family</span> <br>
-            where smart earners thrive 🚀
-        </p>
-
-        <a class="btn" href="https://t.me/YOUR_TELEGRAM_LINK" target="_blank">
-            Join Us Here
-        </a>
+    <div class="logo">
+        <div class="logo-box">MT</div>
+        <div class="brand">MoneyTalks</div>
     </div>
 
-    <!-- STEP 3 JS ADDED HERE -->
-    <script>
-  const params = new URLSearchParams(window.location.search);
-  const paymentId = params.get("razorpay_payment_id");
+    <div class="check"></div>
 
-  if (paymentId) {
-    // Generate One-Time Token
-    function generateToken() {
-      const part1 = "MT";
-      const part2 = new Date().toISOString().slice(0,10).replace(/-/g,"");
-      const part3 = Math.random().toString(36).substring(2, 8).toUpperCase();
-      return `${part1}-${part2}-${part3}`;
-    }
+    <h2 class="success">Payment Successful!</h2>
 
-    const token = generateToken();
+    <div class="payment-box">
+        <strong>Payment Details:</strong><br>
+        Amount: ₹<span id="amount">Loading...</span><br>
+        Transaction ID: <strong id="paymentId">Loading...</strong><br>
+        Date: <strong id="paymentDate">Loading...</strong>
+    </div>
 
-    // Save token to localStorage
-    localStorage.setItem("mt_access_token", token);
+    <span class="highlight">Thank you for trusting us!</span><br>
+    Your payment has been successfully processed.
+</div>
 
-    // Wait 2 seconds, then redirect to access page
-    setTimeout(() => {
-      window.location.href = "/access.html";
-    }, 2000);
+<script>
+const params = new URLSearchParams(window.location.search);
 
-    // OPTIONAL: Show on screen (good for debugging)
-    console.log("Generated Token:", token);
-  }
-    </script>
-    <!-- END STEP 3 -->
+// Razorpay values
+const paymentId = params.get("razorpay_payment_id");
+const amount = params.get("mt_amount") || "Unknown";
+
+// Fill UI data
+document.getElementById("amount").textContent = amount;
+document.getElementById("paymentDate").textContent = new Date().toLocaleString();
+
+if (paymentId) {
+    document.getElementById("paymentId").textContent = paymentId;
+} else {
+    document.getElementById("paymentId").textContent = "Not Provided";
+}
+
+// Generate Access Token
+function generateAccessToken() {
+    const p1 = "MT";
+    const p2 = Date.now().toString(36).toUpperCase();
+    const p3 = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `${p1}-${p2}-${p3}`;
+}
+
+const token = generateAccessToken();
+
+// Save to localStorage (for frontend-only usage)
+localStorage.setItem("mt_access_token", token);
+
+// Redirect user to access page after 2 seconds
+setTimeout(() => {
+    window.location.href = `/access.html?token=${token}`;
+}, 2000);
+
+// Debug log
+console.log("Payment:", paymentId, "Amount:", amount, "Token:", token);
+</script>
 
 </body>
 </html>
