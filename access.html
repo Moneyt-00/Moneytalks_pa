@@ -1,53 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Access Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      padding-top: 80px;
-      background: #f7f7f7;
-    }
-    #status {
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-  </style>
+    <title>Access Verification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f3;
+            padding: 20px;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 450px;
+            margin: auto;
+            box-shadow: 0 0 10px #bbb;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
 
-<h2 id="status">Checking access…</h2>
+<div class="card">
+    <h2>🔍 Verifying Your Access</h2>
+    <p>Please wait…</p>
+    <div class="status">Checking ID…</div>
+</div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbwVfIywYAN9Nu1Qdi46pJxGsCPmqX_7ymXwtNeH0r9AR1x_AGGseC2mg24uyHbvKJn3/exec";
-const url = new URLSearchParams(window.location.search);
-const id = url.get("id");
+// ------------------------------
+// CHANGE THIS TO YOUR APPS SCRIPT URL
+// ------------------------------
+const scriptURL = "https://script.google.com/macros/s/AKfycbxV5hKXVPpoA48Snap7P1uRGeNJ3vnhkHBSBObNtj4AK52BU1FyYVX9yG-xM9ca-jU0/exec";
 
+// Read unique ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
+
+// If no ID found → error
 if (!id) {
-  document.getElementById("status").innerText = "Invalid link!";
-} else {
-  fetch(`${scriptURL}?mode=verify&id=${id}`)
-    .then(res => res.text())
-    .then(text => {
-      if (text === "OK") {
-        document.getElementById("status").innerText = "Access Granted!";
-        setTimeout(() => {
-          window.location.href = "https://t.me/YOUR_TELEGRAM_LINK";
-        }, 1500);
-      }
-      else if (text === "EXPIRED") {
-        document.getElementById("status").innerText = "Link Expired ❌";
-      }
-      else {
-        document.getElementById("status").innerText = "Invalid ID ❌";
-      }
-    })
-    .catch(() => {
-      document.getElementById("status").innerText = "Server error.";
-    });
+    document.querySelector(".status").innerHTML = "Invalid request!";
 }
+
+// Verify ID with Apps Script
+fetch(scriptURL + "?mode=verify&id=" + id)
+    .then(res => res.text())
+    .then(result => {
+        if (result === "OK") {
+            document.querySelector(".status").innerHTML = "Access Granted! Redirecting…";
+
+            // ----------------------------------
+            // CHANGE TELEGRAM LINK HERE
+            // ----------------------------------
+            window.location.href = "https://t.me/+Hy1jWBHA4bBkNWY1";
+        
+        } else if (result === "EXPIRED") {
+            document.querySelector(".status").innerHTML = "❌ This link has expired!";
+        } else if (result === "INVALID") {
+            document.querySelector(".status").innerHTML = "❌ Invalid or corrupted link!";
+        } else {
+            document.querySelector(".status").innerHTML = "Server error!";
+        }
+    })
+    .catch(err => {
+        document.querySelector(".status").innerHTML = "Network Error!";
+    });
 </script>
 
 </body>
