@@ -1,83 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment Success</title>
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0b0f19;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .card {
-    width: 350px;
-    background: #131a2b;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-  }
-  .check {
-    width: 60px;
-    height: 60px;
-    margin: auto;
-    border-radius: 50%;
-    background: #00c853;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 32px;
-    color: white;
-  }
-  .btn {
-    padding: 10px 18px;
-    background: #00e5ff;
-    color: #000;
-    font-weight: bold;
-    border-radius: 6px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 15px;
-  }
-</style>
+    <title>Payment Success</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+        }
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+            max-width: 400px;
+            margin: auto;
+        }
+        .loader {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #444;
+        }
+    </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="check">✔</div>
-  <h2>Payment Successful!</h2>
-  <p id="status">Generating your access link…</p>
+<div class="box">
+    <h2>🎉 Payment Successful</h2>
+    <p>Processing your access…</p>
+    <div class="loader">Please wait…</div>
 </div>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbwVfIywYAN9Nu1Qdi46pJxGsCPmqX_7ymXwtNeH0r9AR1x_AGGseC2mg24uyHbvKJn3/exec";
+// ------------------------------
+// CHANGE THIS TO YOUR NEW APPS SCRIPT URL
+// ------------------------------
+const scriptURL = "https://script.google.com/macros/s/AKfycbxV5hKXVPpoA48Snap7P1uRGeNJ3vnhkHBSBObNtj4AK52BU1FyYVX9yG-xM9ca-jU0/exec";
+
+// Read Razorpay payment parameter
 const urlParams = new URLSearchParams(window.location.search);
-const paymentId = urlParams.get("razorpay_payment_id") || "";
+const payment_id = urlParams.get("razorpay_payment_id");
 
-if (!paymentId) {
-  document.getElementById("status").innerText = "Payment ID not found. Try again.";
-} else {
-  document.getElementById("status").innerText = "Creating access link…";
+// If no payment ID found → show error
+if (!payment_id) {
+    document.querySelector(".loader").innerHTML = "Invalid Payment Response!";
+}
 
-  fetch(`${scriptURL}?mode=create&payment_id=${paymentId}`)
+// Send Payment ID to Google Sheets → create unique ID
+fetch(scriptURL + "?mode=createPayment&payment_id=" + payment_id)
     .then(res => res.json())
     .then(data => {
-      if (data.status === "created" && data.id) {
-        document.getElementById("status").innerText = "Access link created!";
-        window.location.href = `/access.html?id=${data.id}`;
-      } else {
-        document.getElementById("status").innerText = "Error creating link.";
-      }
+        if (data.status === "created") {
+            // Redirect to access.html with generated ID
+            window.location.href = "access.html?id=" + data.id;
+        } else {
+            document.querySelector(".loader").innerHTML = "Error generating your ID!";
+        }
     })
     .catch(err => {
-      document.getElementById("status").innerText = "Network error.";
+        document.querySelector(".loader").innerHTML = "Network error!";
     });
-}
 </script>
 
 </body>
