@@ -3,23 +3,52 @@
 <head>
   <title>Access Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding-top: 80px;
+      background: #f7f7f7;
+    }
+    #status {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-  <h2 id="status">Checking access...</h2>
 
-  <script>
-    const token = localStorage.getItem("mt_access_token");
+<h2 id="status">Checking access…</h2>
 
-    if (token) {
-      document.getElementById("status").innerText = "Access Granted 🟢";
-      // TODO: Load your protected content here
-    } else {
-      document.getElementById("status").innerText = "Access Denied 🔴";
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
-    }
-  </script>
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbwVfIywYAN9Nu1Qdi46pJxGsCPmqX_7ymXwtNeH0r9AR1x_AGGseC2mg24uyHbvKJn3/exec";
+const url = new URLSearchParams(window.location.search);
+const id = url.get("id");
+
+if (!id) {
+  document.getElementById("status").innerText = "Invalid link!";
+} else {
+  fetch(`${scriptURL}?mode=verify&id=${id}`)
+    .then(res => res.text())
+    .then(text => {
+      if (text === "OK") {
+        document.getElementById("status").innerText = "Access Granted!";
+        setTimeout(() => {
+          window.location.href = "https://t.me/YOUR_TELEGRAM_LINK";
+        }, 1500);
+      }
+      else if (text === "EXPIRED") {
+        document.getElementById("status").innerText = "Link Expired ❌";
+      }
+      else {
+        document.getElementById("status").innerText = "Invalid ID ❌";
+      }
+    })
+    .catch(() => {
+      document.getElementById("status").innerText = "Server error.";
+    });
+}
+</script>
+
 </body>
 </html>
-
