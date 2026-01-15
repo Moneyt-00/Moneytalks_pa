@@ -1,76 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Access Verification</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial;
-            background: #eef2f3;
-            padding: 20px;
-            text-align: center;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            max-width: 450px;
-            margin: auto;
-            box-shadow: 0 0 10px #bbb;
-        }
-        .status {
-            margin-top: 15px;
-            font-size: 18px;
-            color: #333;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checking Region…</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background: #f4f4f4;
+        text-align: center;
+    }
+    h1 {
+        font-size: 26px;
+        margin-bottom: 15px;
+    }
+    #region {
+        font-size: 20px;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+
 </head>
 <body>
 
-<div class="card">
-    <h2>🔍 Verifying Your Access</h2>
-    <p>Please wait…</p>
-    <div class="status">Checking ID…</div>
+<div>
+    <h1>Checking your region…</h1>
+    <div id="region">Detecting…</div>
 </div>
 
 <script>
-// ------------------------------
-// CHANGE THIS TO YOUR APPS SCRIPT URL
-// ------------------------------
-const scriptURL = "https://script.google.com/macros/s/AKfycbxV5hKXVPpoA48Snap7P1uRGeNJ3vnhkHBSBObNtj4AK52BU1FyYVX9yG-xM9ca-jU0/exec";
+const INDIA_LINK = "https://rzp.io/rzp/vmr5gHJ";  // ₹10 link
+const INTL_LINK = "https://rzp.io/rzp/UC3cimC7";  // ₹50 link
 
-// Read unique ID from URL
-const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get("id");
+fetch("https://ipapi.co/json/")
+  .then(res => res.json())
+  .then(data => {
+    const country = data.country_name;
+    let amountText;
 
-// If no ID found → error
-if (!id) {
-    document.querySelector(".status").innerHTML = "Invalid request!";
-}
+    if (country === "India") {
+      amountText = "₹10";
+    } else {
+      amountText = "₹50 (converted from INR)";
+    }
 
-// Verify ID with Apps Script
-fetch(scriptURL + "?mode=verify&id=" + id)
-    .then(res => res.text())
-    .then(result => {
-        if (result === "OK") {
-            document.querySelector(".status").innerHTML = "Access Granted! Redirecting…";
+    document.getElementById("region").innerText =
+      `Region detected: ${country} | ${amountText}`;
 
-            // ----------------------------------
-            // CHANGE TELEGRAM LINK HERE
-            // ----------------------------------
-            window.location.href = "https://t.me/+Hy1jWBHA4bBkNWY1";
-        
-        } else if (result === "EXPIRED") {
-            document.querySelector(".status").innerHTML = "❌ This link has expired!";
-        } else if (result === "INVALID") {
-            document.querySelector(".status").innerHTML = "❌ Invalid or corrupted link!";
-        } else {
-            document.querySelector(".status").innerHTML = "Server error!";
-        }
-    })
-    .catch(err => {
-        document.querySelector(".status").innerHTML = "Network Error!";
-    });
+    setTimeout(() => {
+      if (country === "India") {
+        window.location.href = INDIA_LINK;
+      } else {
+        window.location.href = INTL_LINK;
+      }
+    }, 2000);
+  })
+  .catch(() => {
+    // fallback if API fails
+    document.getElementById("region").innerText =
+      "Could not detect region. Redirecting to International Gateway…";
+
+    setTimeout(() => {
+      window.location.href = INTL_LINK;
+    }, 2000);
+  });
 </script>
 
 </body>
