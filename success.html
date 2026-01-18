@@ -1,68 +1,613 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Payment Success</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-            text-align: center;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Success | MoneyTalks</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        background: linear-gradient(135deg, #080c1d 0%, #1a1f3c 100%);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Animated Background */
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(0, 255, 174, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(150, 201, 61, 0.05) 0%, transparent 50%);
+        animation: pulse 8s ease-in-out infinite alternate;
+        z-index: -1;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+
+    .box {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 50px 40px;
+        border-radius: 30px;
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 
+            0 25px 50px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
         }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Decorative border animation */
+    .box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #00ffae, #667eea, #96c93d);
+        animation: borderSlide 3s linear infinite;
+    }
+
+    @keyframes borderSlide {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
+    }
+
+    /* Checkmark animation */
+    .check-container {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 30px;
+        position: relative;
+    }
+
+    .check-circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00ffae 0%, #00b09b 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        animation: 
+            scaleIn 0.5s ease-out,
+            pulseSuccess 2s ease-in-out infinite;
+        box-shadow: 
+            0 0 60px rgba(0, 255, 174, 0.4),
+            inset 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes pulseSuccess {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    /* Confetti effect */
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: linear-gradient(45deg, #00ffae, #667eea, #ff6b6b, #feca57);
+        border-radius: 50%;
+        opacity: 0;
+        animation: confettiFall 1s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+        0% {
+            transform: translateY(-100px) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(500px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    h2 {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 25px;
+        background: linear-gradient(135deg, #00ffae 0%, #96c93d 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
+    }
+
+    .money-bag {
+        font-size: 40px;
+        margin: 20px 0;
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .payment-details {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 25px;
+        margin: 30px 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .detail-label {
+        color: #a0a0c0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .detail-value {
+        color: white;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: right;
+    }
+
+    #amountText {
+        color: #00ffae;
+        font-size: 20px;
+    }
+
+    #paymentID {
+        color: #667eea;
+        font-family: monospace;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+    }
+
+    .welcome-message {
+        font-size: 22px;
+        font-weight: 700;
+        margin: 30px 0;
+        color: #96c93d;
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .welcome-message::before {
+        content: '🚀';
+        position: absolute;
+        left: 0;
+        top: 0;
+        animation: rocket 2s ease-in-out infinite;
+    }
+
+    @keyframes rocket {
+        0%, 100% { transform: translateX(0) rotate(0deg); }
+        25% { transform: translateX(5px) rotate(5deg); }
+        75% { transform: translateX(-5px) rotate(-5deg); }
+    }
+
+    /* MoneyTalks badge */
+    .mt-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(135deg, rgba(0, 255, 174, 0.1), rgba(102, 126, 234, 0.1));
+        padding: 12px 24px;
+        border-radius: 50px;
+        margin: 20px 0;
+        border: 1px solid rgba(0, 255, 174, 0.2);
+    }
+
+    .mt-badge .mt-logo {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #00ffae, #96c93d);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 18px;
+        color: #080c1d;
+    }
+
+    .mt-badge .mt-text {
+        font-size: 18px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00ffae, #96c93d);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    button {
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(135deg, #00ffae 0%, #00b09b 100%);
+        border: none;
+        border-radius: 15px;
+        font-size: 18px;
+        font-weight: 800;
+        color: #080c1d;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        margin: 25px 0;
+        box-shadow: 0 10px 30px rgba(0, 255, 174, 0.3);
+    }
+
+    button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.7s ease;
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 255, 174, 0.5);
+    }
+
+    button:hover::before {
+        left: 100%;
+    }
+
+    button:active {
+        transform: translateY(-1px);
+    }
+
+    button i {
+        margin-right: 10px;
+    }
+
+    .redirect {
+        font-size: 15px;
+        color: #a0a0c0;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #timer {
+        font-weight: 800;
+        color: #00ffae;
+        font-size: 20px;
+        min-width: 30px;
+        text-align: center;
+    }
+
+    .timer-container {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .timer-ring {
+        width: 30px;
+        height: 30px;
+        position: relative;
+    }
+
+    .timer-ring circle {
+        fill: none;
+        stroke: #00ffae;
+        stroke-width: 3;
+        stroke-linecap: round;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+        animation: countdown 5s linear forwards;
+        stroke-dasharray: 88;
+        stroke-dashoffset: 88;
+    }
+
+    @keyframes countdown {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
         .box {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
-            max-width: 400px;
-            margin: auto;
+            padding: 40px 25px;
+            border-radius: 25px;
         }
-        .loader {
-            margin-top: 20px;
+
+        h2 {
+            font-size: 30px;
+        }
+
+        .check-circle {
+            width: 100px;
+            height: 100px;
+            font-size: 50px;
+        }
+
+        .payment-details {
+            padding: 20px;
+        }
+
+        .detail-label {
+            font-size: 15px;
+        }
+
+        .detail-value {
             font-size: 16px;
-            color: #444;
         }
-    </style>
+
+        button {
+            padding: 18px;
+            font-size: 17px;
+        }
+    }
+</style>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
 
 <div class="box">
-    <h2>🎉 Payment Successful</h2>
-    <p>Processing your access…</p>
-    <div class="loader">Please wait…</div>
+    <!-- Checkmark Animation -->
+    <div class="check-container">
+        <div class="check-circle">
+            <i class="fas fa-check"></i>
+        </div>
+    </div>
+
+    <!-- Success Title -->
+    <h2>Payment Successful!</h2>
+
+    <!-- Money Bag Emoji -->
+    <div class="money-bag">💰</div>
+
+    <!-- MoneyTalks Badge -->
+    <div class="mt-badge">
+        <div class="mt-logo">MT</div>
+        <div class="mt-text">MoneyTalks</div>
+    </div>
+
+    <!-- Payment Details -->
+    <div class="payment-details">
+        <div class="detail-row">
+            <span class="detail-label"><i class="fas fa-rupee-sign"></i> Amount Paid:</span>
+            <span class="detail-value" id="amountText">₹10.00 INR</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label"><i class="fas fa-id-card"></i> Payment ID:</span>
+            <span class="detail-value" id="paymentID">N/A</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label"><i class="fas fa-calendar-check"></i> Date & Time:</span>
+            <span class="detail-value" id="dateTime"></span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label"><i class="fas fa-shield-alt"></i> Status:</span>
+            <span class="detail-value" style="color: #00ffae;">Completed</span>
+        </div>
+    </div>
+
+    <!-- Welcome Message -->
+    <div class="welcome-message">
+        Welcome to the MoneyTalks Family!
+    </div>
+
+    <!-- Telegram Button -->
+    <button onclick="joinTG()">
+        <i class="fab fa-telegram-plane"></i> Join Telegram Group
+    </button>
+
+    <!-- Redirect Timer -->
+    <div class="redirect">
+        <div class="timer-container">
+            <div class="timer-ring">
+                <svg viewBox="0 0 30 30">
+                    <circle cx="15" cy="15" r="14"></circle>
+                </svg>
+            </div>
+            Redirecting in <span id="timer">5</span> seconds...
+        </div>
+    </div>
 </div>
 
 <script>
-// ------------------------------
-// CHANGE THIS TO YOUR NEW APPS SCRIPT URL
-// ------------------------------
-const scriptURL = "https://script.google.com/macros/s/AKfycbxV5hKXVPpoA48Snap7P1uRGeNJ3vnhkHBSBObNtj4AK52BU1FyYVX9yG-xM9ca-jU0/exec";
-
-// Read Razorpay payment parameter
-const urlParams = new URLSearchParams(window.location.search);
-const payment_id = urlParams.get("razorpay_payment_id");
-
-// If no payment ID found → show error
-if (!payment_id) {
-    document.querySelector(".loader").innerHTML = "Invalid Payment Response!";
+// Create confetti effect
+function createConfetti() {
+    const colors = ['#00ffae', '#667eea', '#ff6b6b', '#feca57', '#96c93d'];
+    const box = document.querySelector('.box');
+    
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.width = (5 + Math.random() * 10) + 'px';
+        confetti.style.height = confetti.style.width;
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 1 + 's';
+        confetti.style.animationDuration = (0.5 + Math.random() * 1.5) + 's';
+        
+        box.appendChild(confetti);
+        
+        // Remove after animation
+        setTimeout(() => {
+            if (confetti.parentNode) {
+                confetti.remove();
+            }
+        }, 2000);
+    }
 }
 
-// Send Payment ID to Google Sheets → create unique ID
-fetch(scriptURL + "?mode=createPayment&payment_id=" + payment_id)
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === "created") {
-            // Redirect to access.html with generated ID
-            window.location.href = "access.html?id=" + data.id;
-        } else {
-            document.querySelector(".loader").innerHTML = "Error generating your ID!";
-        }
-    })
-    .catch(err => {
-        document.querySelector(".loader").innerHTML = "Network error!";
-    });
+// Get URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const amount = urlParams.get('amount') || '₹10.00';
+const paymentId = urlParams.get('payment_id') || 'N/A';
+
+// Update display
+document.getElementById('amountText').textContent = amount;
+document.getElementById('paymentID').textContent = paymentId;
+
+// Set current date and time
+const now = new Date();
+const dateTimeString = now.toLocaleDateString('en-IN', { 
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+});
+document.getElementById('dateTime').textContent = dateTimeString;
+
+// Telegram redirect
+function joinTG() {
+    window.location.href = 'https://t.me/+hN0iG3CZGmViOGY1';
+}
+
+// Auto-redirect timer
+let timeLeft = 5;
+const timerElement = document.getElementById('timer');
+const timerCircle = document.querySelector('.timer-ring circle');
+
+// Start confetti animation
+setTimeout(createConfetti, 500);
+setTimeout(createConfetti, 1000);
+setTimeout(createConfetti, 1500);
+
+// Update timer
+const countdown = setInterval(() => {
+    timeLeft--;
+    timerElement.textContent = timeLeft;
+    
+    // Update circle animation
+    const dashOffset = (timeLeft / 5) * 88;
+    timerCircle.style.strokeDashoffset = dashOffset;
+    
+    if (timeLeft <= 0) {
+        clearInterval(countdown);
+        joinTG();
+    }
+}, 1000);
+
+// Play success sound (optional)
+function playSuccessSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 523.25; // C5
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 1);
+    } catch (e) {
+        console.log('Audio not supported');
+    }
+}
+
+// Play sound on load
+window.addEventListener('load', () => {
+    setTimeout(playSuccessSound, 300);
+});
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    // Space or Enter to join Telegram
+    if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault();
+        joinTG();
+    }
+    // Escape to cancel redirect
+    if (e.code === 'Escape') {
+        clearInterval(countdown);
+        timerElement.textContent = 'Stopped';
+        timerElement.style.color = '#ff6b6b';
+    }
+});
+
+// Add click anywhere to join (optional)
+document.querySelector('.box').addEventListener('click', (e) => {
+    if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'I') {
+        joinTG();
+    }
+});
 </script>
 
 </body>
-</html>
+                </html>
