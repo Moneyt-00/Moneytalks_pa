@@ -1,173 +1,540 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checking Region...</title>
-<meta name="description" content="Region detection for payment processing">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyTalks | Checking Region…</title>
+    <meta name="description" content="Region detection for payment processing">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    <style>
+        :root {
+            --india-color: #FF9933;
+            --international-color: #0047AB;
+            --mt-purple: #667eea;
+            --mt-purple-dark: #764ba2;
+            --mt-green: #00b09b;
+            --mt-green-light: #96c93d;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
 
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-        padding: 20px;
-        color: white;
-        line-height: 1.6;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-        width: 100%;
-        max-width: 500px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 40px 30px;
-        text-align: center;
-        border: 1px solid rgba(0, 255, 174, 0.2);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, var(--mt-purple) 0%, var(--mt-purple-dark) 100%);
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
 
-    .logo {
-        font-size: 42px;
-        margin-bottom: 15px;
-        color: #00ffae;
-        text-shadow: 0 0 15px rgba(0, 255, 174, 0.5);
-    }
-
-    h1 {
-        font-size: 28px;
-        margin-bottom: 30px;
-        color: white;
-        font-weight: 600;
-    }
-
-    .status-container {
-        margin: 30px 0;
-        padding: 25px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 15px;
-        border-left: 4px solid #00ffae;
-    }
-
-    .region-info {
-        font-size: 20px;
-        margin: 15px 0;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        color: #00ffae;
-    }
-
-    .amount-display {
-        font-size: 48px;
-        font-weight: 800;
-        margin: 25px 0;
-        color: #00ffae;
-        text-shadow: 0 0 20px rgba(0, 255, 174, 0.5);
-    }
-
-    .spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid rgba(0, 255, 174, 0.2);
-        border-top: 4px solid #00ffae;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 20px auto;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    .details {
-        background: rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        border-radius: 12px;
-        margin-top: 20px;
-        text-align: left;
-        font-size: 14px;
-        display: none;
-    }
-
-    .details.active {
-        display: block;
-    }
-
-    .detail-item {
-        margin: 10px 0;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .detail-label {
-        color: rgba(255, 255, 255, 0.7);
-        font-weight: 500;
-    }
-
-    .detail-value {
-        font-weight: 600;
-        color: #00ffae;
-    }
-
-    .success-animation {
-        font-size: 50px;
-        margin: 20px 0;
-        color: #00ffae;
-    }
-
-    .footer {
-        margin-top: 30px;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
-    }
-
-    @media (max-width: 768px) {
         .container {
-            padding: 30px 20px;
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 50px 40px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* MoneyTalks Logo Header */
+        .mt-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .mt-badge {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--mt-green) 0%, var(--mt-green-light) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: white;
+            transform: rotate(-5deg);
+            box-shadow: 0 8px 20px rgba(0, 176, 155, 0.4);
+        }
+
+        .mt-badge span {
+            display: block;
+            transform: rotate(5deg);
+        }
+
+        .mt-text {
+            text-align: left;
+        }
+
+        .mt-text .main {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--mt-purple) 0%, var(--mt-purple-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mt-text .tagline {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--mt-purple);
+            margin-top: 4px;
+            text-transform: uppercase;
         }
 
         h1 {
+            font-size: 32px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--mt-purple), var(--mt-purple-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Status Container */
+        .status-container {
+            margin: 30px 0;
+            padding: 30px;
+            background: var(--light-bg);
+            border-radius: 20px;
+            border-left: 5px solid var(--mt-purple);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--mt-green), var(--mt-green-light));
+        }
+
+        .region-info {
             font-size: 24px;
+            margin: 20px 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .india-flag, .world-flag {
+            font-size: 36px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
         .amount-display {
-            font-size: 40px;
+            font-size: 32px;
+            font-weight: 800;
+            margin: 20px 0;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            transition: var(--transition);
+            letter-spacing: 1px;
         }
-    }
-</style>
+
+        .india-amount {
+            background: linear-gradient(135deg, var(--mt-green), var(--mt-green-light));
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 176, 155, 0.3);
+        }
+
+        .international-amount {
+            background: linear-gradient(135deg, var(--mt-purple), var(--mt-purple-dark));
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Spinner Animation */
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(102, 126, 234, 0.1);
+            border-top: 5px solid var(--mt-purple);
+            border-right: 5px solid var(--mt-green);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            margin: 40px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--mt-purple), var(--mt-purple-dark));
+            width: 0%;
+            animation: progress 2s ease-out forwards;
+            border-radius: 4px;
+        }
+
+        @keyframes progress {
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Details Panel */
+        .details {
+            display: none;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            text-align: left;
+            font-size: 15px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .details.active {
+            display: block;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detail-item {
+            margin: 12px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: right;
+        }
+
+        /* Manual Selection */
+        .manual-select {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px dashed #e0e0e0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            min-width: 180px;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-india {
+            background: linear-gradient(135deg, var(--mt-green), var(--mt-green-light));
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 176, 155, 0.3);
+        }
+
+        .btn-international {
+            background: linear-gradient(135deg, var(--mt-purple), var(--mt-purple-dark));
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            color: #666;
+            font-size: 15px;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-top: 15px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Success Animation */
+        .success-animation {
+            display: none;
+            font-size: 70px;
+            animation: scaleIn 0.5s ease-out;
+            margin: 30px 0;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1));
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            color: #d63031;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 14px;
+            border-left: 4px solid #d63031;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 25px;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .mt-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .mt-text {
+                text-align: center;
+            }
+
+            .mt-text .main {
+                font-size: 32px;
+            }
+
+            .region-info {
+                font-size: 20px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .amount-display {
+                font-size: 28px;
+                padding: 12px 24px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .mt-badge {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .mt-text .main {
+                font-size: 28px;
+            }
+
+            .mt-text .tagline {
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+
+            .status-container {
+                padding: 25px 20px;
+            }
+
+            .amount-display {
+                font-size: 24px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
-    <div class="logo">💰</div>
+    <!-- MoneyTalks Header -->
+    <div class="mt-header">
+        <div class="mt-badge">
+            <span>MT</span>
+        </div>
+        <div class="mt-text">
+            <div class="main">MoneyTalks</div>
+            <div class="tagline">Where smart earners thrive</div>
+        </div>
+    </div>
     
-    <h1>Checking Your Region...</h1>
+    <h1>Checking Your Region…</h1>
     
     <div class="status-container">
         <div class="spinner" id="spinner"></div>
         <div class="region-info" id="regionInfo">
-            <span id="regionFlag"></span>
-            <span id="regionText">Detecting your location...</span>
+            <span id="regionFlag">🌍</span>
+            <span id="regionText">Detecting your location…</span>
         </div>
         <div class="amount-display" id="amountDisplay">—</div>
     </div>
 
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage"></div>
+
+    <!-- Details Panel -->
     <div class="details" id="details">
         <div class="detail-item">
             <span class="detail-label">Country:</span>
@@ -182,27 +549,70 @@
             <span class="detail-value" id="detailTimezone">—</span>
         </div>
         <div class="detail-item">
-            <span class="detail-label">IP:</span>
+            <span class="detail-label">IP Address:</span>
             <span class="detail-value" id="detailIP">—</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Payment Gateway:</span>
+            <span class="detail-value" id="detailGateway">—</span>
         </div>
     </div>
 
-    <div class="success-animation" id="successAnimation" style="display: none;">✅</div>
+    <!-- Manual Selection -->
+    <div class="manual-select" id="manualSelect" style="display: none;">
+        <p style="margin-bottom: 15px; color: #666; font-weight: 500;">Location not detected? Select manually:</p>
+        <div class="button-group">
+            <button class="btn btn-india" onclick="redirectToPayment('IN')">
+                🇮🇳 Pay ₹10 (India)
+            </button>
+            <button class="btn btn-international" onclick="redirectToPayment('INTL')">
+                🌍 Pay ₹50 (International)
+            </button>
+        </div>
+    </div>
 
+    <!-- Success Animation -->
+    <div class="success-animation" id="successAnimation">✅</div>
+
+    <!-- Footer -->
     <div class="footer" id="footer">
-        <p>Opening secure payment gateway...</p>
+        <p>Redirecting to secure payment gateway…</p>
+        <div class="security-badge">
+            🔒 256-bit SSL Encrypted • Powered by MoneyTalks
+        </div>
+        <p style="font-size: 13px; margin-top: 15px; color: #888;">
+            Your location data is only used to determine the appropriate payment method.
+            We don't store any personal information.
+        </p>
     </div>
 </div>
 
 <script>
-// Configuration
+// MoneyTalks Configuration
 const CONFIG = {
     INDIA_LINK: "https://rzp.io/rzp/vmr5gHJ",
     INTERNATIONAL_LINK: "https://rzp.io/rzp/UC3cimC7",
-    REDIRECT_DELAY: 2000
+    REDIRECT_DELAY: 3000,
+    FALLBACK_TIMEOUT: 5000,
+    USE_MULTIPLE_APIS: true,
+    BRAND: {
+        name: "MoneyTalks",
+        tagline: "Where smart earners thrive",
+        colors: {
+            primary: "#667eea",
+            secondary: "#00b09b"
+        }
+    }
 };
 
+// State management
+let detectionComplete = false;
+let detectedCountry = null;
+let detectedCountryCode = null;
+let currentPaymentLink = null;
+
 // DOM Elements
+const regionInfo = document.getElementById('regionInfo');
 const regionText = document.getElementById('regionText');
 const regionFlag = document.getElementById('regionFlag');
 const amountDisplay = document.getElementById('amountDisplay');
@@ -211,89 +621,72 @@ const detailCountry = document.getElementById('detailCountry');
 const detailCurrency = document.getElementById('detailCurrency');
 const detailTimezone = document.getElementById('detailTimezone');
 const detailIP = document.getElementById('detailIP');
+const detailGateway = document.getElementById('detailGateway');
 const spinner = document.getElementById('spinner');
 const successAnimation = document.getElementById('successAnimation');
+const manualSelect = document.getElementById('manualSelect');
 const footer = document.getElementById('footer');
+const errorMessage = document.getElementById('errorMessage');
 
-// Update UI based on country
-function updateUI(countryName, countryCode, ip = '') {
+// Country code to flag emoji mapping
+function getFlagEmoji(countryCode) {
+    if (!countryCode || countryCode === 'XX') return '🌐';
+    const codePoints = countryCode
+        .toUpperCase()
+        .split('')
+        .map(char => 127397 + char.charCodeAt());
+    return String.fromCodePoint(...codePoints);
+}
+
+// Update UI based on country detection
+function updateUI(countryName, countryCode = 'XX', ip = '', isFallback = false) {
     const isIndia = countryCode === 'IN';
     
     // Set flag
-    regionFlag.innerHTML = isIndia ? '🇮🇳' : '🌍';
+    const flag = getFlagEmoji(countryCode);
+    regionFlag.innerHTML = isIndia ? '🇮🇳' : flag;
     
     // Set region text
-    regionText.textContent = `Redirecting to ${isIndia ? 'Indian' : 'International'} payment gateway...`;
+    let displayName = countryName || 'International';
+    if (isFallback && countryName) {
+        displayName += ' (estimated)';
+    } else if (!countryName) {
+        displayName = 'International Region';
+    }
+    regionText.textContent = displayName;
     
     // Set amount display
-    amountDisplay.textContent = isIndia ? '₹10' : '₹50';
+    if (isIndia) {
+        amountDisplay.textContent = '₹10 INR';
+        amountDisplay.className = 'amount-display india-amount';
+        currentPaymentLink = CONFIG.INDIA_LINK;
+        detailGateway.textContent = 'Indian Payment Gateway';
+    } else {
+        amountDisplay.textContent = '₹50 (~$0.60 USD)';
+        amountDisplay.className = 'amount-display international-amount';
+        currentPaymentLink = CONFIG.INTERNATIONAL_LINK;
+        detailGateway.textContent = 'International Payment Gateway';
+    }
     
     // Update details panel
-    detailCountry.textContent = countryName;
+    detailCountry.textContent = countryName || 'Not detected';
     detailCurrency.textContent = isIndia ? 'Indian Rupee (INR)' : 'Converted from INR';
-    detailTimezone.textContent = new Date().toLocaleTimeString('en-US', { 
-        timeZoneName: 'short' 
-    }).split(' ')[1];
+    
+    // Get timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    detailTimezone.textContent = timezone || 'Not available';
+    
+    // Show IP or placeholder
     detailIP.textContent = ip || 'Not available';
     
-    // Show details
-    details.classList.add('active');
-}
-
-// Redirect to appropriate payment link
-function redirectToPayment(countryCode = null) {
-    const isIndia = countryCode === 'IN';
-    const paymentLink = isIndia ? CONFIG.INDIA_LINK : CONFIG.INTERNATIONAL_LINK;
-    
-    // Show success animation
-    spinner.style.display = 'none';
-    successAnimation.style.display = 'block';
-    
-    // Redirect after delay
+    // Show details panel with animation
     setTimeout(() => {
-        window.location.href = paymentLink;
-    }, 1500);
-}
-
-// Detect location
-async function detectLocation() {
-    try {
-        let res = await fetch("https://ipapi.co/json/");
-        let data = await res.json();
-
-        let countryName = data.country_name;
-        let countryCode = data.country_code;
-        let ip = data.ip;
-
-        // Update UI
-        updateUI(countryName, countryCode, ip);
-        
-        // Redirect
-        setTimeout(() => {
-            redirectToPayment(countryCode);
-        }, CONFIG.REDIRECT_DELAY);
-
-    } catch {
-        // Fallback for error
-        regionText.textContent = 'Redirecting to International payment gateway...';
-        amountDisplay.textContent = '₹50';
-        detailCountry.textContent = 'International';
-        detailCurrency.textContent = 'Converted from INR';
-        detailTimezone.textContent = new Date().toLocaleTimeString('en-US', { 
-            timeZoneName: 'short' 
-        }).split(' ')[1];
-        detailIP.textContent = 'Not available';
         details.classList.add('active');
-        
-        setTimeout(() => {
-            redirectToPayment('INTL');
-        }, CONFIG.REDIRECT_DELAY);
-    }
+    }, 800);
 }
 
-// Start when page loads
-document.addEventListener('DOMContentLoaded', detectLocation);
-</script>
-
-</body>
-    </html>
+// Show error message
+function showError(message) {
+    errorMessage.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style
