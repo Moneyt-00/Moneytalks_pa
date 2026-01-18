@@ -3,23 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checking Region…</title>
+<title>Checking Region...</title>
 <meta name="description" content="Region detection for payment processing">
 
-<!-- Favicon -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
-
 <style>
-    :root {
-        --india-color: #FF9933;
-        --international-color: #0047AB;
-        --text-color: #333;
-        --light-bg: #f8f9fa;
-        --card-bg: #ffffff;
-        --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        --transition: all 0.3s ease;
-    }
-
     * {
         margin: 0;
         padding: 0;
@@ -27,117 +14,76 @@
     }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         display: flex;
         align-items: center;
         justify-content: center;
         min-height: 100vh;
         margin: 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
         padding: 20px;
-        color: var(--text-color);
+        color: white;
         line-height: 1.6;
     }
 
     .container {
         width: 100%;
-        max-width: 600px;
-        background: var(--card-bg);
-        border-radius: 24px;
-        box-shadow: var(--shadow);
+        max-width: 500px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
         padding: 40px 30px;
         text-align: center;
-        animation: fadeIn 0.6s ease-out;
-        position: relative;
-        overflow: hidden;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        border: 1px solid rgba(0, 255, 174, 0.2);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
 
     .logo {
-        font-size: 48px;
-        margin-bottom: 20px;
-        animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-        0%, 100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-10px);
-        }
+        font-size: 42px;
+        margin-bottom: 15px;
+        color: #00ffae;
+        text-shadow: 0 0 15px rgba(0, 255, 174, 0.5);
     }
 
     h1 {
-        font-size: 32px;
-        margin-bottom: 20px;
-        color: #2c3e50;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: 28px;
+        margin-bottom: 30px;
+        color: white;
+        font-weight: 600;
     }
 
     .status-container {
         margin: 30px 0;
         padding: 25px;
-        background: var(--light-bg);
-        border-radius: 16px;
-        border-left: 4px solid #667eea;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        border-left: 4px solid #00ffae;
     }
 
     .region-info {
-        font-size: 24px;
+        font-size: 20px;
         margin: 15px 0;
         font-weight: 600;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-    }
-
-    .india-flag, .world-flag {
-        font-size: 32px;
+        color: #00ffae;
     }
 
     .amount-display {
-        font-size: 28px;
-        font-weight: 700;
-        margin: 15px 0;
-        padding: 12px 24px;
-        border-radius: 50px;
-        display: inline-block;
-        transition: var(--transition);
-    }
-
-    .india-amount {
-        background: linear-gradient(135deg, #FF9933, #FF512F);
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
-    }
-
-    .international-amount {
-        background: linear-gradient(135deg, #0047AB, #00B4DB);
-        color: white;
-        box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3);
+        font-size: 48px;
+        font-weight: 800;
+        margin: 25px 0;
+        color: #00ffae;
+        text-shadow: 0 0 20px rgba(0, 255, 174, 0.5);
     }
 
     .spinner {
         width: 50px;
         height: 50px;
-        border: 4px solid rgba(102, 126, 234, 0.2);
-        border-top: 4px solid #667eea;
+        border: 4px solid rgba(0, 255, 174, 0.2);
+        border-top: 4px solid #00ffae;
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin: 20px auto;
@@ -148,189 +94,58 @@
         100% { transform: rotate(360deg); }
     }
 
-    .progress-bar {
-        width: 100%;
-        height: 6px;
-        background: rgba(102, 126, 234, 0.1);
-        border-radius: 3px;
-        margin: 30px 0;
-        overflow: hidden;
-    }
-
-    .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #667eea, #764ba2);
-        width: 0%;
-        animation: progress 2s ease-out forwards;
-        border-radius: 3px;
-    }
-
-    @keyframes progress {
-        to {
-            width: 100%;
-        }
-    }
-
     .details {
-        display: none;
-        background: var(--light-bg);
+        background: rgba(0, 0, 0, 0.2);
         padding: 20px;
         border-radius: 12px;
         margin-top: 20px;
         text-align: left;
         font-size: 14px;
+        display: none;
     }
 
     .details.active {
         display: block;
-        animation: slideUp 0.5s ease-out;
-    }
-
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
     }
 
     .detail-item {
-        margin: 8px 0;
+        margin: 10px 0;
         display: flex;
         justify-content: space-between;
     }
 
     .detail-label {
-        color: #666;
+        color: rgba(255, 255, 255, 0.7);
         font-weight: 500;
     }
 
     .detail-value {
         font-weight: 600;
-        color: #2c3e50;
+        color: #00ffae;
     }
 
-    .manual-select {
-        margin-top: 25px;
-        padding-top: 25px;
-        border-top: 2px dashed #e0e0e0;
-    }
-
-    .button-group {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        margin-top: 15px;
-        flex-wrap: wrap;
-    }
-
-    .btn {
-        padding: 12px 28px;
-        border-radius: 50px;
-        font-size: 16px;
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-        transition: var(--transition);
-        border: none;
-        min-width: 160px;
-    }
-
-    .btn-india {
-        background: linear-gradient(135deg, #FF9933, #FF512F);
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
-    }
-
-    .btn-international {
-        background: linear-gradient(135deg, #0047AB, #00B4DB);
-        color: white;
-        box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3);
-    }
-
-    .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn:active {
-        transform: translateY(-1px);
+    .success-animation {
+        font-size: 50px;
+        margin: 20px 0;
+        color: #00ffae;
     }
 
     .footer {
         margin-top: 30px;
-        color: #666;
+        color: rgba(255, 255, 255, 0.7);
         font-size: 14px;
     }
 
-    .success-animation {
-        display: none;
-        font-size: 60px;
-        animation: scaleIn 0.5s ease-out;
-        margin-bottom: 20px;
-    }
-
-    @keyframes scaleIn {
-        from {
-            transform: scale(0);
-            opacity: 0;
-        }
-        to {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-
-    /* Responsive Design */
     @media (max-width: 768px) {
         .container {
             padding: 30px 20px;
-            border-radius: 20px;
         }
 
         h1 {
-            font-size: 28px;
-        }
-
-        .region-info {
-            font-size: 20px;
-            flex-direction: column;
-            gap: 5px;
+            font-size: 24px;
         }
 
         .amount-display {
-            font-size: 24px;
-            padding: 10px 20px;
-        }
-
-        .button-group {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .btn {
-            width: 100%;
-            max-width: 280px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        body {
-            padding: 15px;
-        }
-
-        .container {
-            padding: 25px 15px;
-        }
-
-        h1 {
-            font-size: 24px;
-        }
-
-        .logo {
             font-size: 40px;
         }
     }
@@ -340,21 +155,17 @@
 <body>
 
 <div class="container">
-    <div class="logo">🌍</div>
+    <div class="logo">💰</div>
     
-    <h1>Checking Your Region…</h1>
+    <h1>Checking Your Region...</h1>
     
     <div class="status-container">
         <div class="spinner" id="spinner"></div>
         <div class="region-info" id="regionInfo">
             <span id="regionFlag"></span>
-            <span id="regionText">Detecting your location…</span>
+            <span id="regionText">Detecting your location...</span>
         </div>
         <div class="amount-display" id="amountDisplay">—</div>
-    </div>
-
-    <div class="progress-bar">
-        <div class="progress-fill"></div>
     </div>
 
     <div class="details" id="details">
@@ -376,22 +187,10 @@
         </div>
     </div>
 
-    <div class="manual-select" id="manualSelect" style="display: none;">
-        <p style="margin-bottom: 15px; color: #666;">Or select manually:</p>
-        <div class="button-group">
-            <button class="btn btn-india" onclick="redirectToPayment('IN')">₹10 (India)</button>
-            <button class="btn btn-international" onclick="redirectToPayment('INTL')">₹50 (International)</button>
-        </div>
-    </div>
-
-    <div class="success-animation" id="successAnimation">✅</div>
+    <div class="success-animation" id="successAnimation" style="display: none;">✅</div>
 
     <div class="footer" id="footer">
-        <p>Redirecting to secure payment gateway…</p>
-        <p style="font-size: 12px; margin-top: 10px; color: #888;">
-            Your location data is only used to determine the appropriate payment method.
-            We don't store any personal information.
-        </p>
+        <p>Opening secure payment gateway...</p>
     </div>
 </div>
 
@@ -400,18 +199,10 @@
 const CONFIG = {
     INDIA_LINK: "https://rzp.io/rzp/vmr5gHJ",
     INTERNATIONAL_LINK: "https://rzp.io/rzp/UC3cimC7",
-    REDIRECT_DELAY: 3000, // Increased delay for better UX
-    FALLBACK_TIMEOUT: 5000, // Timeout for geolocation APIs
-    USE_MULTIPLE_APIS: true // Use multiple APIs for better accuracy
+    REDIRECT_DELAY: 2000
 };
 
-// State management
-let detectionComplete = false;
-let detectedCountry = null;
-let detectedCountryCode = null;
-
 // DOM Elements
-const regionInfo = document.getElementById('regionInfo');
 const regionText = document.getElementById('regionText');
 const regionFlag = document.getElementById('regionFlag');
 const amountDisplay = document.getElementById('amountDisplay');
@@ -422,223 +213,87 @@ const detailTimezone = document.getElementById('detailTimezone');
 const detailIP = document.getElementById('detailIP');
 const spinner = document.getElementById('spinner');
 const successAnimation = document.getElementById('successAnimation');
-const manualSelect = document.getElementById('manualSelect');
 const footer = document.getElementById('footer');
 
-// Country code to flag emoji mapping
-function getFlagEmoji(countryCode) {
-    if (!countryCode || countryCode === 'XX') return '🌐';
-    const codePoints = countryCode
-        .toUpperCase()
-        .split('')
-        .map(char => 127397 + char.charCodeAt());
-    return String.fromCodePoint(...codePoints);
-}
-
 // Update UI based on country
-function updateUI(countryName, countryCode = 'XX', ip = '') {
+function updateUI(countryName, countryCode, ip = '') {
     const isIndia = countryCode === 'IN';
     
     // Set flag
-    regionFlag.innerHTML = isIndia ? '🇮🇳' : getFlagEmoji(countryCode);
+    regionFlag.innerHTML = isIndia ? '🇮🇳' : '🌍';
     
     // Set region text
-    regionText.textContent = countryName || 'International';
+    regionText.textContent = `Redirecting to ${isIndia ? 'Indian' : 'International'} payment gateway...`;
     
     // Set amount display
-    amountDisplay.textContent = isIndia ? '₹10' : '₹50 (converted from INR)';
-    amountDisplay.className = `amount-display ${isIndia ? 'india-amount' : 'international-amount'}`;
+    amountDisplay.textContent = isIndia ? '₹10' : '₹50';
     
     // Update details panel
-    detailCountry.textContent = countryName || 'Not detected';
+    detailCountry.textContent = countryName;
     detailCurrency.textContent = isIndia ? 'Indian Rupee (INR)' : 'Converted from INR';
     detailTimezone.textContent = new Date().toLocaleTimeString('en-US', { 
         timeZoneName: 'short' 
     }).split(' ')[1];
     detailIP.textContent = ip || 'Not available';
     
-    // Show details after detection
-    setTimeout(() => {
-        details.classList.add('active');
-    }, 500);
+    // Show details
+    details.classList.add('active');
 }
 
 // Redirect to appropriate payment link
 function redirectToPayment(countryCode = null) {
-    if (detectionComplete) return;
+    const isIndia = countryCode === 'IN';
+    const paymentLink = isIndia ? CONFIG.INDIA_LINK : CONFIG.INTERNATIONAL_LINK;
     
-    detectionComplete = true;
+    // Show success animation
     spinner.style.display = 'none';
     successAnimation.style.display = 'block';
     
-    const isIndia = countryCode === 'IN' || (detectedCountryCode && detectedCountryCode === 'IN');
-    const paymentLink = isIndia ? CONFIG.INDIA_LINK : CONFIG.INTERNATIONAL_LINK;
-    
-    // Update UI for redirect
-    regionText.textContent = `Redirecting to ${isIndia ? 'Indian' : 'International'} payment gateway…`;
-    footer.innerHTML = '<p>Opening secure payment gateway…</p>';
-    
-    // Redirect after a short delay to show success animation
+    // Redirect after delay
     setTimeout(() => {
         window.location.href = paymentLink;
     }, 1500);
 }
 
-// Try multiple geolocation APIs for better reliability
+// Detect location
 async function detectLocation() {
-    const apis = [
-        {
-            name: 'ipapi.co',
-            url: 'https://ipapi.co/json/',
-            parser: data => ({
-                country: data.country_name,
-                code: data.country_code,
-                ip: data.ip
-            })
-        },
-        {
-            name: 'ipapi.com',
-            url: 'https://ipapi.co/json/',
-            parser: data => ({
-                country: data.country_name,
-                code: data.country,
-                ip: data.ip
-            })
-        },
-        {
-            name: 'ip-api.com',
-            url: 'https://ip-api.com/json/',
-            parser: data => ({
-                country: data.country,
-                code: data.countryCode,
-                ip: data.query
-            })
-        }
-    ];
-
-    for (const api of apis) {
-        try {
-            const response = await fetch(api.url);
-            if (response.ok) {
-                const data = await response.json();
-                const result = api.parser(data);
-                
-                // Validate response
-                if (result.country && result.code) {
-                    console.log(`Detected via ${api.name}:`, result);
-                    
-                    // Normalize country name
-                    let countryName = result.country;
-                    if (result.code === 'IN' && !countryName.includes('India')) {
-                        countryName = 'India';
-                    }
-                    
-                    detectedCountry = countryName;
-                    detectedCountryCode = result.code;
-                    
-                    // Update UI
-                    updateUI(countryName, result.code, result.ip);
-                    
-                    // Redirect after delay
-                    setTimeout(() => {
-                        redirectToPayment();
-                    }, CONFIG.REDIRECT_DELAY);
-                    
-                    return; // Success, exit function
-                }
-            }
-        } catch (error) {
-            console.warn(`${api.name} failed:`, error);
-            continue; // Try next API
-        }
-    }
-    
-    // If all APIs fail, use fallback
-    handleDetectionFailure();
-}
-
-// Handle detection failure
-function handleDetectionFailure() {
-    console.log('All geolocation APIs failed, using fallback');
-    
-    // Try to guess from timezone
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const isLikelyIndia = timezone.includes('Calcutta') || timezone.includes('Kolkata') || 
-                         timezone.includes('India') || timezone.includes('Asia/Kolkata');
-    
-    if (isLikelyIndia) {
-        detectedCountry = 'India';
-        detectedCountryCode = 'IN';
-        updateUI('India (estimated)', 'IN', '');
-    } else {
-        updateUI('International', 'XX', '');
-    }
-    
-    // Show manual selection
-    manualSelect.style.display = 'block';
-    
-    // Still auto-redirect after longer delay
-    setTimeout(() => {
-        if (!detectionComplete) {
-            redirectToPayment();
-        }
-    }, CONFIG.REDIRECT_DELAY + 2000);
-}
-
-// Initialize detection
-async function init() {
-    // Check if location detection is blocked by user settings
-    if (navigator.permissions && navigator.permissions.query) {
-        try {
-            const permission = await navigator.permissions.query({ name: 'geolocation' });
-            if (permission.state === 'denied') {
-                regionText.textContent = 'Location access denied. Using IP detection…';
-            }
-        } catch (error) {
-            // Permission API not supported, continue anyway
-        }
-    }
-
-    // Start detection
     try {
-        await detectLocation();
-    } catch (error) {
-        console.error('Detection failed:', error);
-        handleDetectionFailure();
+        let res = await fetch("https://ipapi.co/json/");
+        let data = await res.json();
+
+        let countryName = data.country_name;
+        let countryCode = data.country_code;
+        let ip = data.ip;
+
+        // Update UI
+        updateUI(countryName, countryCode, ip);
+        
+        // Redirect
+        setTimeout(() => {
+            redirectToPayment(countryCode);
+        }, CONFIG.REDIRECT_DELAY);
+
+    } catch {
+        // Fallback for error
+        regionText.textContent = 'Redirecting to International payment gateway...';
+        amountDisplay.textContent = '₹50';
+        detailCountry.textContent = 'International';
+        detailCurrency.textContent = 'Converted from INR';
+        detailTimezone.textContent = new Date().toLocaleTimeString('en-US', { 
+            timeZoneName: 'short' 
+        }).split(' ')[1];
+        detailIP.textContent = 'Not available';
+        details.classList.add('active');
+        
+        setTimeout(() => {
+            redirectToPayment('INTL');
+        }, CONFIG.REDIRECT_DELAY);
     }
-    
-    // Fallback timeout
-    setTimeout(() => {
-        if (!detectionComplete && !detectedCountry) {
-            console.log('Detection timeout reached');
-            handleDetectionFailure();
-        }
-    }, CONFIG.FALLBACK_TIMEOUT);
 }
 
 // Start when page loads
-document.addEventListener('DOMContentLoaded', init);
-
-// Global function for manual selection buttons
-window.redirectToPayment = redirectToPayment;
-
-// Prevent accidental navigation away
-window.addEventListener('beforeunload', (e) => {
-    if (!detectionComplete) {
-        e.preventDefault();
-        e.returnValue = '';
-        return 'Are you sure you want to leave? Payment detection is in progress.';
-    }
-});
-
-// Fallback for very old browsers
-if (!window.fetch) {
-    document.getElementById('regionText').textContent = 
-        'Your browser is outdated. Please select payment option:';
-    manualSelect.style.display = 'block';
-    spinner.style.display = 'none';
-}
+document.addEventListener('DOMContentLoaded', detectLocation);
 </script>
 
 </body>
-              </html>
+    </html>
